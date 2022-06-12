@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Builder
 @Data
@@ -20,5 +21,8 @@ public class User implements Serializable {
     private String login;
     private String password;
     private String name;
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Phone> phones;
 
 }

@@ -24,17 +24,17 @@ public class UserService {
     }
 
     public User save(User user) {
+        if (user.getPhones() != null) {
+            for (int i = 0; i < user.getPhones().size(); i++) {
+                user.getPhones().get(i).setUser(user);
+            }
+        }
         return userRepository.save(user);
     }
 
     public User update(Long id, User user) {
         User oldUser = findById(id);
-        User newUser = User.builder()
-                .id(oldUser.getId())
-                .name(user.getName())
-                .login(user.getLogin())
-                .password(user.getPassword())
-                .build();
+        User newUser = User.builder().id(oldUser.getId()).name(user.getName()).login(user.getLogin()).password(user.getPassword()).build();
         return userRepository.save(newUser);
     }
 

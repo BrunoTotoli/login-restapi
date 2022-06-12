@@ -34,7 +34,9 @@ public class UserController {
                 .name(userPostRequestBody.getName())
                 .password(userPostRequestBody.getPassword())
                 .login(userPostRequestBody.getLogin())
+                .phones(userPostRequestBody.getPhones())
                 .build();
+
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
     }
 
