@@ -27,4 +27,16 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User update(Long id, User user) {
+        User oldUser = findById(id);
+        User newUser = User.builder()
+                .id(oldUser.getId())
+                .name(user.getName())
+                .login(user.getLogin())
+                .password(user.getPassword())
+                .build();
+        return userRepository.save(newUser);
+    }
+
+
 }
