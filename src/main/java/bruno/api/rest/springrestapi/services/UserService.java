@@ -24,11 +24,9 @@ public class UserService {
     }
 
     public User save(User user) {
-        if (user.getPhones() != null) {
-            for (int i = 0; i < user.getPhones().size(); i++) {
-                user.getPhones().get(i).setUser(user);
-            }
-        }
+        user.getPhones().stream()
+                .filter(phone -> phone.getUser() == null)
+                .forEach(phone -> phone.setUser(user));
         return userRepository.save(user);
     }
 
