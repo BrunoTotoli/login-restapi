@@ -1,6 +1,8 @@
 package bruno.api.rest.springrestapi.controllers;
 
 import bruno.api.rest.springrestapi.entities.User;
+import bruno.api.rest.springrestapi.requests.UserPostRequestBody;
+import bruno.api.rest.springrestapi.requests.UserPutRequestBody;
 import bruno.api.rest.springrestapi.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,13 +29,30 @@ public class UserController {
     }
 
     @PostMapping(value = "/")
-    public ResponseEntity<User> insert(@RequestBody User user) {
+    public ResponseEntity<User> insert(@RequestBody UserPostRequestBody userPostRequestBody) {
+        User user = User.builder()
+                .name(userPostRequestBody.getName())
+                .password(userPostRequestBody.getPassword())
+                .login(userPostRequestBody.getLogin())
+                .build();
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user) {
-        return new ResponseEntity<User>(userService.update(id, user), HttpStatus.OK);
+    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody UserPutRequestBody userPutRequestBody) {
+        User user = User.builder()
+                .id(userPutRequestBody.getId())
+                .login(userPutRequestBody.getLogin())
+                .password(userPutRequestBody.getPassword())
+                .name(userPutRequestBody.getName())
+                .build();
+        return new ResponseEntity<>(userService.update(id, user), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 

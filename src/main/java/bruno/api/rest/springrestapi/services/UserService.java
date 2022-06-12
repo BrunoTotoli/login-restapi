@@ -20,7 +20,7 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> user = userRepository.findById(id);
-        return user.get();
+        return user.orElseThrow(() -> new IllegalArgumentException("This id dont exists"));
     }
 
     public User save(User user) {
@@ -36,6 +36,10 @@ public class UserService {
                 .password(user.getPassword())
                 .build();
         return userRepository.save(newUser);
+    }
+
+    public void delete(Long id) {
+        userRepository.deleteById(id);
     }
 
 
