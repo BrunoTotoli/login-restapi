@@ -1,6 +1,7 @@
 package bruno.api.rest.springrestapi.controllers;
 
 import bruno.api.rest.springrestapi.entities.User;
+import bruno.api.rest.springrestapi.mapper.UserMapper;
 import bruno.api.rest.springrestapi.requests.UserPostRequestBody;
 import bruno.api.rest.springrestapi.requests.UserPutRequestBody;
 import bruno.api.rest.springrestapi.services.UserService;
@@ -30,13 +31,7 @@ public class UserController {
 
     @PostMapping(value = "/")
     public ResponseEntity<User> insert(@RequestBody UserPostRequestBody userPostRequestBody) {
-        User user = User.builder()
-                .name(userPostRequestBody.getName())
-                .password(userPostRequestBody.getPassword())
-                .login(userPostRequestBody.getLogin())
-                .phones(userPostRequestBody.getPhones())
-                .build();
-
+        User user = UserMapper.INSTANCE.userPostToUser(userPostRequestBody);
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
     }
 
