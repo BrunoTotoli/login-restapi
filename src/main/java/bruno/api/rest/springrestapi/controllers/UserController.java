@@ -20,8 +20,10 @@ public class UserController {
     private UserService userService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(userService.findById(id));
+    public ResponseEntity<UserPutRequestBody> findById(@PathVariable Long id) {
+        User user = userService.findById(id);
+        UserPutRequestBody userPutRequestBody = UserMapper.INSTANCE.userToUserPutRequest(user);
+        return ResponseEntity.ok().body(userPutRequestBody);
     }
 
     @GetMapping(value = "/")
@@ -37,12 +39,7 @@ public class UserController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<User> update(@PathVariable Long id, @RequestBody UserPutRequestBody userPutRequestBody) {
-        User user = User.builder()
-                .id(userPutRequestBody.getId())
-                .login(userPutRequestBody.getLogin())
-                .password(userPutRequestBody.getPassword())
-                .name(userPutRequestBody.getName())
-                .build();
+        User user = UserMapper.INSTANCE.userPutToUser(userPutRequestBody);
         return new ResponseEntity<>(userService.update(id, user), HttpStatus.OK);
     }
 

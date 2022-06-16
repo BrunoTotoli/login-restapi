@@ -1,7 +1,9 @@
 package bruno.api.rest.springrestapi.services;
 
 import bruno.api.rest.springrestapi.entities.User;
+import bruno.api.rest.springrestapi.mapper.UserMapper;
 import bruno.api.rest.springrestapi.repositories.UserRepository;
+import bruno.api.rest.springrestapi.requests.UserPutRequestBody;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +34,10 @@ public class UserService {
 
     public User update(Long id, User user) {
         User oldUser = findById(id);
-        User newUser = User.builder().id(oldUser.getId()).name(user.getName()).login(user.getLogin()).password(user.getPassword()).build();
-        return userRepository.save(newUser);
+        User userUpdated = user;
+        userUpdated.setId(oldUser.getId());
+        userUpdated.setPhones(oldUser.getPhones());
+        return userRepository.save(userUpdated);
     }
 
     public void delete(Long id) {
