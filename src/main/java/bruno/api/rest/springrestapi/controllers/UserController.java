@@ -31,6 +31,12 @@ public class UserController {
         return ResponseEntity.ok().body(userService.findAll());
     }
 
+    @GetMapping("/{id}/phones")
+    public ResponseEntity<User> findPhoneById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(userService.findById(id));
+    }
+
+
     @PostMapping(value = "/")
     public ResponseEntity<User> insert(@RequestBody UserPostRequestBody userPostRequestBody) {
         User user = UserMapper.INSTANCE.userPostToUser(userPostRequestBody);
