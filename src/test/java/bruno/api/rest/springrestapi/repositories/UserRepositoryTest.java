@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -19,7 +20,8 @@ class UserRepositoryTest {
     UserRepository userRepository;
 
     @Test
-    void save() {
+    @DisplayName("Save user when successful")
+    void save_SaveUser() {
         User user = createUser();
         User userSaved = userRepository.save(user);
 
@@ -32,7 +34,8 @@ class UserRepositoryTest {
     }
 
     @Test
-    void update() {
+    @DisplayName("Save and Update user when successful")
+    void update_UpdateUser() {
         User user = createUser();
         User userSaved = userRepository.save(user);
         userSaved.setName("Cleiton");
@@ -46,7 +49,8 @@ class UserRepositoryTest {
     }
 
     @Test
-    void remove() {
+    @DisplayName("Delete user when successful")
+    void remove_RemovesUser() {
         User user = createUser();
         User save = userRepository.save(user);
         userRepository.delete(save);
@@ -55,6 +59,18 @@ class UserRepositoryTest {
         Assertions.assertThat(userFindById).isEmpty();
 
 
+    }
+
+    @Test
+    @DisplayName("Find by Name and return list of users when successful")
+    void findUserByName_ReturnListOfAnime() {
+        User user = createUser();
+        User savedUser = userRepository.save(user);
+        String name = savedUser.getName();
+
+        List<User> users = userRepository.findByName(name);
+
+        Assertions.assertThat(users).isNotEmpty().contains(savedUser);
     }
 
     static User createUser() {
