@@ -1,6 +1,5 @@
 package bruno.api.rest.springrestapi.repositories;
 
-import bruno.api.rest.springrestapi.entities.Phone;
 import bruno.api.rest.springrestapi.entities.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -71,6 +70,19 @@ class UserRepositoryTest {
         List<User> users = userRepository.findByName(name);
 
         Assertions.assertThat(users).isNotEmpty().contains(savedUser);
+    }
+
+    @Test
+    @DisplayName("Find by name and return empty list when successful")
+    void findUserByName_ReturnEmptyList(){
+        User user = createUser();
+        User savedUser = userRepository.save(user);
+        String name = "Robin";
+
+        List<User> users = userRepository.findByName(name);
+
+        Assertions.assertThat(users).isEmpty();
+
     }
 
     static User createUser() {
