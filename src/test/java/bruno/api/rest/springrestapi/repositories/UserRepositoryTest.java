@@ -1,6 +1,7 @@
 package bruno.api.rest.springrestapi.repositories;
 
 import bruno.api.rest.springrestapi.entities.User;
+import bruno.api.rest.springrestapi.util.UserCreator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.List;
 import java.util.Optional;
+
+import static bruno.api.rest.springrestapi.util.UserCreator.createUserValid;
 
 
 @DataJpaTest
@@ -21,7 +24,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("Save user when successful")
     void save_SaveUser() {
-        User user = createUser();
+        User user = createUserValid();
         User userSaved = userRepository.save(user);
 
         Assertions.assertThat(userSaved).isNotNull();
@@ -35,7 +38,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("Save and Update user when successful")
     void update_UpdateUser() {
-        User user = createUser();
+        User user = createUserValid();
         User userSaved = userRepository.save(user);
         userSaved.setName("Cleiton");
         User userUpdate = userRepository.save(userSaved);
@@ -50,7 +53,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("Delete user when successful")
     void remove_RemovesUser() {
-        User user = createUser();
+        User user = createUserValid();
         User save = userRepository.save(user);
         userRepository.delete(save);
         Optional<User> userFindById = userRepository.findById(save.getId());
@@ -63,7 +66,7 @@ class UserRepositoryTest {
     @Test
     @DisplayName("Find by Name and return list of users when successful")
     void findUserByName_ReturnListOfAnime() {
-        User user = createUser();
+        User user = createUserValid();
         User savedUser = userRepository.save(user);
         String name = savedUser.getName();
 
@@ -74,8 +77,8 @@ class UserRepositoryTest {
 
     @Test
     @DisplayName("Find by name and return empty list when successful")
-    void findUserByName_ReturnEmptyList(){
-        User user = createUser();
+    void findUserByName_ReturnEmptyList() {
+        User user = createUserValid();
         User savedUser = userRepository.save(user);
         String name = "Robin";
 
@@ -83,15 +86,5 @@ class UserRepositoryTest {
 
         Assertions.assertThat(users).isEmpty();
 
-    }
-
-    static User createUser() {
-        return User.builder()
-                .name("Jairo")
-                .id(1L)
-                .password("jairosenha")
-                .login("jairodelas")
-                .phones(null)
-                .build();
     }
 }
