@@ -8,11 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Optional;
 
 
 @DataJpaTest
@@ -46,6 +42,17 @@ class UserRepositoryTest {
         Assertions.assertThat(userUpdate.getId()).isNotNull();
         Assertions.assertThat(userUpdate.getId()).isEqualTo(userSaved.getId());
         Assertions.assertThat(userUpdate.getName()).isNotEqualTo("Jairo");
+
+    }
+
+    @Test
+    void remove() {
+        User user = createUser();
+        User save = userRepository.save(user);
+        userRepository.delete(save);
+        Optional<User> userFindById = userRepository.findById(save.getId());
+
+        Assertions.assertThat(userFindById).isEmpty();
 
 
     }
